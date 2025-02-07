@@ -14,84 +14,90 @@ function getComputerChoice() {
   }
 }
 
-console.log(getComputerChoice());
+const buttonRock = document.createElement("button");
+buttonRock.textContent = "Rock";
+document.body.appendChild(buttonRock);
+const buttonPaper = document.createElement("button");
+buttonPaper.textContent = "Paper";
+document.body.appendChild(buttonPaper);
+const buttonScissors = document.createElement("button");
+buttonScissors.textContent = "Scissors";
+document.body.appendChild(buttonScissors);
 
-function getHumanChoice() {
-  //pop up window for user to give an answer
-  let userChoice = prompt(
-    "What is your Choice?",
-    "Rock, paper or scissors",
-  ).toLowerCase();
-  //if answer = rock, paper or scissors, return answer
-  if (
-    userChoice === "rock" ||
-    userChoice === "paper" ||
-    userChoice === "scissors"
-  ) {
-    return userChoice;
-  }
-  //if else = wrong answer, try again
-  else {
-    alert("Oops, that was not an option. Try again!");
-    return getHumanChoice();
-  }
-}
+buttonRock.addEventListener("click", function () {
+  playRound("rock");
+});
+buttonPaper.addEventListener("click", function () {
+  playRound("paper");
+});
+buttonScissors.addEventListener("click", function () {
+  playRound("scissors");
+});
 
 //starting point for both scores
-let humanScore = 0;
+let playerScore = 0;
 let computerScore = 0;
 
-function playRound() {
-  //parameters receive value from previous steps, but make them case-insensitive
-  let humanChoice = getHumanChoice().toLowerCase();
-  let computerChoice = getComputerChoice();
+const results = document.createElement("div");
+document.body.appendChild(results);
 
+function playRound(playerChoice) {
+  //parameters receive value from previous steps, but make them case-insensitive
+  //let playerChoice = getHumanChoice().toLowerCase();
+  let computerChoice = getComputerChoice();
+  console.log("My choice is " + getComputerChoice());
+  console.log("Your choice is " + playerChoice);
   //compare both answers and give point to winner
-  if (humanChoice === computerChoice) {
+  if (playerChoice === computerChoice) {
     console.log("It's a draw! Try again!");
   }
-  if (humanChoice === "rock" && computerChoice === "paper") {
+  if (playerChoice === "rock" && computerChoice === "paper") {
     console.log("You lose! Paper beats rock.");
     computerScore += 1;
   }
-  if (humanChoice === "rock" && computerChoice === "scissors") {
+  if (playerChoice === "rock" && computerChoice === "scissors") {
     console.log("You win! Rock beats scissors.");
-    humanScore += 1;
+    playerScore += 1;
   }
-  if (humanChoice === "paper" && computerChoice === "scissors") {
+  if (playerChoice === "paper" && computerChoice === "scissors") {
     console.log("You lose! Scissors beats paper.");
     computerScore += 1;
   }
-  if (humanChoice === "paper" && computerChoice === "rock") {
+  if (playerChoice === "paper" && computerChoice === "rock") {
     console.log("You win! Paper beats rock.");
-    humanScore += 1;
+    playerScore += 1;
   }
-  if (humanChoice === "scissors" && computerChoice === "rock") {
+  if (playerChoice === "scissors" && computerChoice === "rock") {
     console.log("You lose! Rock beats scissors.");
     computerScore += 1;
   }
-  if (humanChoice === "scissors" && computerChoice === "paper") {
+  if (playerChoice === "scissors" && computerChoice === "paper") {
     console.log("You win! Scissors beats paper.");
-    humanScore += 1;
+    playerScore += 1;
   }
-  console.log("Your score is " + humanScore + ".");
-  console.log("My score is " + computerScore + ".");
-}
 
-// play round 5 times
-function playGame() {
-  playRound();
-  playRound();
-  playRound();
-  playRound();
-  playRound();
-  console.log(
-    "This is the end of the game. Your final score is " +
-      humanScore +
-      " and mine is " +
-      computerScore +
-      ".",
-  );
-}
+  results.textContent =
+    "You chose " +
+    playerChoice +
+    ". I chose " +
+    computerChoice +
+    ". Your score is " +
+    playerScore +
+    ". My score is " +
+    computerScore +
+    ".";
 
-playGame();
+  if (playerScore >= 5) {
+    results.textContent +=
+      " Congrats! This is the end of the game. You have 5 points, you win the game!";
+    document.body.removeChild(buttonRock);
+    document.body.removeChild(buttonPaper);
+    document.body.removeChild(buttonScissors);
+  } else if (computerScore >= 5) {
+    results.textContent +=
+      " Oh too bad, this is the end of the game. I have 5 points so I win. Loser!";
+    document.body.removeChild(buttonRock);
+    document.body.removeChild(buttonPaper);
+    document.body.removeChild(buttonScissors);
+  }
+}
